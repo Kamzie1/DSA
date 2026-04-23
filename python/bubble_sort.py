@@ -26,7 +26,8 @@ def bubble_sort(array):
             break
 
 
-array = [1,1,3,2,5,5,3,4,7,77,1,2,33]
-bubble_sort(array)
-print(array)
+if __name__ == "__main__":
+    array = [1,1,3,2,5,5,3,4,7,77,1,2,33]
+    bubble_sort(array)
+    print(array)
 
