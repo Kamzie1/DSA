@@ -2,7 +2,10 @@ def counting_sort(array:list):
     """
     Counting sort algorithm.
     Time complexity: O(n)
-    Memory complexity: O(k+n+1), where k is the biggest number in array
+    Memory complexity: O(k+n), where k is the biggest number in array
+    type:
+      * not in place
+      * stable (however if we start filling sorted with nums iterating from the start of array then it will not be stable)
     """
 
     N = len(array)
