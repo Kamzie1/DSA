@@ -64,7 +64,7 @@ def quick_sort(array:list):
         quick sort algorithm.
         The algorithm splits the array into two smaller arrays, one with bigger and one with smaller numbers all the way down.
         Time complexity: omega(nlogn), however O(n^2) when we don't divide equally (m is the highest/lowest number)
-        Memory complexity: O(1)
+        Memory complexity: O(n) (function call stack in recursion)
         Type:
           * in place
           * stable 

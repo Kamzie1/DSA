@@ -4,6 +4,7 @@ def quickselect_rek(array:list, l:int, r:int, f: int) -> int:
     """
         A quick selection algorithm based on partitions used in quick sort
         Time complexity: on average O(n), however worst case(or actual O) is O(n^2)
+        Memory complexity: O(logn) (functon call stack)
     """
     if l > r:
         return -1
