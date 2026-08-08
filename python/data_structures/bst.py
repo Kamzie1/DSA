@@ -26,13 +26,28 @@ class BST:
                     return
                 node = node.right
 
-    def min(self):
-        node = self.node
+    def min_val(self):
+        node =  self.min()
+        if node is not None:
+            return node.val
+        return None
+
+    @staticmethod
+    def _min(node):
         if node is None:
             return None
         while node.left is not None:
             node = node.left
-        return node.val
+        return node
+
+    def min(self):
+        return BST._min(self.node)
+
+    def max_val(self):
+        node =  self.max()
+        if node is not None:
+            return node.val
+        return None
 
     def max(self):
         node = self.node
@@ -40,31 +55,82 @@ class BST:
             return None
         while node.right is not None:
             node = node.right
-        return node.val
+        return node
 
-    def contains(self, val)->bool:
+    def find(self, val)->Node|None:
         """
         time: O(n), omega(logn)
         space: O(n)
         """
         node = self.node
         if node is None:
-            return False
+            return None
         while node is not None and node.val != val:
             if node.val > val:
                 node = node.left
             else:
                 node = node.right
-        return node is not None
+        return node 
 
+    def contains(self, val)->bool:
+        """
+        time: O(n), omega(logn)
+        space: O(n)
+        """
+        if self.find(val) is not None:
+            return True
+        return False
+    
     def erase(self, val):
         """
-        time: O(h) h:height, omega(1)
-        space: O(h), recursion
+        time: O(H) gdzie H to wysokość drzewa
+        space: O(H) na stos wywołań rekurencyjnych
         """
-        pass
+        self.node = self._erase_recursive(self.node, val)
 
+    def _erase_recursive(self, node, val):
+        if node is None:
+            return None
+        
+        if val < node.val:
+            node.left = self._erase_recursive(node.left, val)
+        elif val > node.val:
+            node.right = self._erase_recursive(node.right, val)
+        else:
+            if node.left is None:
+                return node.right
+            elif node.right is None:
+                return node.left
+            next_min = self._min(node.right)
 
+            assert(next_min is not None)
+            
+            node.val = next_min.val
+            
+            node.right = self._erase_recursive(node.right, next_min.val)
+            
+        return node
+
+    def is_balanced(self)->bool:
+        """
+        time: O(n) - liczba węzłów
+        space: O(h) - wysokość
+        """
+        def _check_height(node:Node|None)->int:
+            if node is None:
+                return 0
+            left_node = _check_height(node.left)
+            if left_node == -1:
+                return -1
+            right_node = _check_height(node.right)
+            if right_node == -1:
+                return -1
+
+            if abs(left_node - right_node) > 1:
+                return -1
+            return max(left_node, right_node)
+        return _check_height(self.node)!=-1
+            
     """
     DFS: 
         time: O(n)
