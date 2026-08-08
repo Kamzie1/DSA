@@ -45,9 +45,11 @@ int vector_reserve(vector_t* vec, size_t new_capacity);
 // Modifiers
 int vector_push_back(vector_t* vec, int element);
 void vector_clear(vector_t* vec);
-int vector_update(vector_t* vec, int element, size_t pos);
+void vector_update(vector_t* vec, int element, size_t pos);
 int vector_get(vector_t* vec, size_t pos);
 int* vector_at(vector_t* vec, size_t pos);
+int vector_insert(vector_t* vec, int element, size_t pos);
+void vector_erase(vector_t* vec, size_t pos);
 
 // Operations
 size_t vector_find(vector_t* vec, int element, size_t start);

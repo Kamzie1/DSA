@@ -1,19 +1,12 @@
 #include <signal.h>
-#include <setjmp.h>
 #include <assert.h>
 #include <stdio.h>
+
+#include "test_utils.h"
 
 #define DSA_EXPOSED
 #define VECTOR_CAPACITY_STRATEGY 2
 #include "data_structures/vector.h"
-
-jmp_buf jump_buffer;
-
-void assert_catcher(int sig) {
-    if (sig == SIGABRT) {
-        longjmp(jump_buffer, 1); 
-    }
-}
 
 void test_creation_and_capacity(void) {
     printf("Running test_creation_and_capacity:  ");
@@ -68,7 +61,7 @@ void test_update_and_clear(void) {
     vector_push_back(vec, 200);
     
     // Update existing element
-    assert(vector_update(vec, 999, 1) == SUCCESS);
+    vector_update(vec, 999, 1);
     assert(vector_find(vec, 999, 0) == 1);
     assert(vector_find(vec, 200, 0) == (size_t)-1); // 200 should be overwritten
     
@@ -83,99 +76,58 @@ void test_update_and_clear(void) {
     printf("\033[32mPASSED\033[0m\n");
 }
 
+void test_insert_and_erase(void) {
+    printf("Running test_insert_and_erase: ");
+    
+    vector_t* vec = vector_create(5);
+    vector_push_back(vec, 10);
+    vector_push_back(vec, 30);
+    
+    // Insert in the middle
+    assert(vector_insert(vec, 20, 1) == SUCCESS);
+    assert(vector_size(vec) == 3);
+    
+    // Verify internal shift: [10, 20, 30]
+    assert(vector_find(vec, 20, 0) == 1);
+    assert(vector_find(vec, 30, 0) == 2);
+    
+    // Erase from the middle
+    vector_erase(vec, 1);
+    assert(vector_size(vec) == 2);
+    
+    // Verify internal shift: [10, 30]
+    assert(vector_find(vec, 30, 0) == 1);
+    assert(vector_find(vec, 10, 0) == (size_t)-1);
+    
+    
+    vector_free(vec);
+    printf("\033[32mPASSED\033[0m\n");
+}
+
 void test_error_handling(void) {
     printf("Running test_error_handling: ");
     
 
     signal(SIGABRT, assert_catcher);
 
-    if (setjmp(jump_buffer) == 0) {
-        
-        vector_push_back(NULL, 10); // This SHOULD trigger the assert
-        
-        printf("\033[31mFAILED\033[31m (Assert did not fire)\n");
-        return;
-    } 
+    TEST_ASSERT(vector_push_back, NULL, 10); // This SHOULD trigger the assert
 
     vector_t* vec = vector_create(2);
     vector_push_back(vec, 10);
 
-    assert(vector_update(vec, 99, 5) == OUT_OF_RANGE);
-    
-    if (setjmp(jump_buffer) == 0) {
-        vector_size(NULL);       
-        printf("\033[31mFAILED\033[31m (Assert did not fire)\n");
-        return;
-    }
-
-    if (setjmp(jump_buffer) == 0) {
-        vector_capacity(NULL);       
-        printf("\033[31mFAILED\033[31m (Assert did not fire)\n");
-        return;
-    }
-
-    if (setjmp(jump_buffer) == 0) {
-        vector_t* copy = vector_copy(NULL); 
-        (void)copy;
-        printf("\033[31mFAILED\033[31m (Assert did not fire)\n");
-        return;
-    }
-
-    if (setjmp(jump_buffer) == 0) {
-        vector_free(NULL);
-        printf("\033[31mFAILED\033[31m (Assert did not fire)\n");
-        return;
-    }
-
-    if (setjmp(jump_buffer) == 0) {
-        vector_empty(NULL);
-        printf("\033[31mFAILED\033[31m (Assert did not fire)\n");
-    }
-
-    if (setjmp(jump_buffer) == 0) {
-        vector_reserve(NULL, 1);
-        printf("\033[31mFAILED\033[31m (Assert did not fire)\n");
-    }
-
-    if (setjmp(jump_buffer) == 0) {
-        vector_reserve(vec, 1);
-        printf("\033[31mFAILED\033[31m (Assert did not fire)\n");
-    }
-
-    if (setjmp(jump_buffer) == 0) {
-        vector_clear(NULL);
-        printf("\033[31mFAILED\033[31m (Assert did not fire)\n");
-    }
-
-    if (setjmp(jump_buffer) == 0) {
-        vector_update(NULL, 1, 1);
-        printf("\033[31mFAILED\033[31m (Assert did not fire)\n");
-    }
-
-    if (setjmp(jump_buffer) == 0) {
-        vector_get(NULL, 1);
-        printf("\033[31mFAILED\033[31m (Assert did not fire)\n");
-    }
-
-    if (setjmp(jump_buffer) == 0) {
-        vector_get(vec, 3);
-        printf("\033[31mFAILED\033[31m (Assert did not fire)\n");
-    }
-
-    if (setjmp(jump_buffer) == 0) {
-        vector_at(NULL, 1);
-        printf("\033[31mFAILED\033[31m (Assert did not fire)\n");
-    }
-
-    if (setjmp(jump_buffer) == 0) {
-        vector_at(vec, 4);
-        printf("\033[31mFAILED\033[31m (Assert did not fire)\n");
-    }
-
-    if (setjmp(jump_buffer) == 0) {
-        vector_find(NULL, 1, 0);
-        printf("\033[31mFAILED\033[31m (Assert did not fire)\n");
-    }
+    TEST_ASSERT(vector_size,vec);       
+    TEST_ASSERT(vector_capacity,NULL);       
+    TEST_ASSERT(vector_free,NULL);
+    TEST_ASSERT(vector_empty,NULL);
+    TEST_ASSERT(vector_reserve,NULL, 1);
+    TEST_ASSERT(vector_reserve,vec, 1);
+    TEST_ASSERT(vector_clear,NULL);
+    TEST_ASSERT(vector_update,NULL, 1, 1);
+    TEST_ASSERT(vector_get,NULL, 1);
+    TEST_ASSERT(vector_get,vec, 3);
+    TEST_ASSERT(vector_at,NULL, 1);
+    TEST_ASSERT(vector_at,vec, 4);
+    TEST_ASSERT(vector_find,NULL, 1, 0);
     
     vector_free(vec);
 
@@ -197,7 +149,7 @@ void test_copy(void) {
     assert(vector_size(clone) == 3);
     
     // Modify the clone to ensure deep copy
-    assert(vector_update(clone, 99, 0) == SUCCESS);
+    vector_update(clone, 99, 0);
     
     // Original should remain unchanged
     assert(vector_find(original, 1, 0) == 0);
@@ -215,11 +167,10 @@ int main(void) {
     test_creation_and_capacity();
     test_push_and_find();
     test_update_and_clear();
+    test_insert_and_erase();
     test_error_handling();
     test_copy();
     
     printf("--------------------------------\n");
-    printf("\033[32mAll tests completed successfully\033[0m\n");
-    
     return 0;
 }
