@@ -115,7 +115,7 @@ void test_error_handling(void) {
     vector_t* vec = vector_create(2);
     vector_push_back(vec, 10);
 
-    TEST_ASSERT(vector_size,vec);       
+    TEST_ASSERT(vector_size,NULL);       
     TEST_ASSERT(vector_capacity,NULL);       
     TEST_ASSERT(vector_free,NULL);
     TEST_ASSERT(vector_empty,NULL);

@@ -5,19 +5,20 @@
 #include <signal.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <stdlib.h>
 
 jmp_buf jump_buffer;
 int saved_stderr_fd = -1;
 
 
-#define TEST_ASSERT(test_func, ...)                          \
-if (setjmp(jump_buffer) == 0) {                              \
-                                                             \
-    TEST_ASSERT_INTERNAL(test_func, __VA_ARGS__);            \
-                                                             \
-    printf("\033[31mFAILED\033[0m (Assert did not fire)\n"); \
-    return;                                                  \
-}                                                            \
+#define TEST_ASSERT(test_func, ...)                         \
+if (setjmp(jump_buffer) == 0) {                             \
+                                                            \
+    TEST_ASSERT_INTERNAL(test_func, __VA_ARGS__);           \
+                                                            \
+    printf("\033[31mFAILED\033[0m (Assert did not fire)\n");\
+    exit(1);                                                \
+}                                                           \
 
 #define TEST_ASSERT_INTERNAL(test_func, ...)  \
     saved_stderr_fd = dup(STDERR_FILENO);     \
