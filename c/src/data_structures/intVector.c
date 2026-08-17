@@ -7,7 +7,7 @@
 #include "utils.h"
 
 #define DSA_EXPOSED
-#include "data_structures/vector.h"
+#include "data_structures/intVector.h"
 
 #ifndef VECTOR_CAPACITY_STRATEGY
 #define VECTOR_CAPACITY_STRATEGY 2;
@@ -15,17 +15,17 @@
 
 static inline size_t get_new_capacity(size_t old_capacity);
 
-void vector_init(vector_t* vec, size_t capacity){
+void vector_init(intVector_t* vec, size_t capacity){
     if(vec == NULL){
-        vec = (vector_t*)malloc(sizeof(vector_t));
+        vec = (intVector_t*)malloc(sizeof(intVector_t));
     }
     vec->data = (int*)malloc(capacity * sizeof(int));
     vec->size = 0;
     vec->capacity = capacity;
 }
 
-vector_t* vector_create(size_t capacity){
-    vector_t* vec = (vector_t*)malloc(sizeof(vector_t));
+intVector_t* vector_create(size_t capacity){
+    intVector_t* vec = (intVector_t*)malloc(sizeof(intVector_t));
     if(vec == NULL){
         return NULL;
     }
@@ -35,16 +35,16 @@ vector_t* vector_create(size_t capacity){
     return vec;
 }
 
-void vector_free(vector_t* vec){
+void vector_free(intVector_t* vec){
     assert(vec != NULL && "Vector pointer must not be NULL");
     free(vec->data);
     free(vec);
     vec = NULL;
 }
 
-vector_t* vector_copy(vector_t* vec){
+intVector_t* vector_copy(intVector_t* vec){
     assert(vec != NULL && "Vector pointer must not be NULL");
-    vector_t* vec_copy= (vector_t*)malloc(sizeof(vector_t));
+    intVector_t* vec_copy= (intVector_t*)malloc(sizeof(intVector_t));
     vec_copy->data = (int*)malloc(vec->capacity * sizeof(int));
     memcpy(vec_copy->data, vec->data, vec->capacity);
     vec_copy->capacity = vec->capacity;
@@ -53,22 +53,22 @@ vector_t* vector_copy(vector_t* vec){
 }
 
 // Capacity
-int vector_empty(vector_t* vec){
+int vector_empty(intVector_t* vec){
     assert(vec != NULL && "Vector pointer must not be NULL");
     return vec->size == 0;
 }
-size_t vector_size(vector_t* vec){
+size_t vector_size(intVector_t* vec){
     assert(vec != NULL && "Vector pointer must not be NULL");
     return vec->size;
 }
-size_t vector_capacity(vector_t* vec){
+size_t vector_capacity(intVector_t* vec){
     assert(vec != NULL && "Vector pointer must not be NULL");
     return vec->capacity;
 }
 size_t vector_max_size(void){
     return SIZE_MAX;
 }
-int vector_reserve(vector_t* vec, size_t new_capacity){
+int vector_reserve(intVector_t* vec, size_t new_capacity){
     assert(vec != NULL && "Vector pointer must not be NULL");
     assert(new_capacity >= vec->capacity && "New capacity must be greater than the old one.");
 
@@ -82,7 +82,7 @@ int vector_reserve(vector_t* vec, size_t new_capacity){
 }
 
 // Modifiers
-int vector_push_back(vector_t* vec, int element){
+int vector_push_back(intVector_t* vec, int element){
     assert(vec != NULL && "Vector pointer must not be NULL");
     if(vec->size >= vec->capacity){
        size_t new_capacity = get_new_capacity(vec->capacity);
@@ -95,28 +95,28 @@ int vector_push_back(vector_t* vec, int element){
     vec->size++;
     return SUCCESS;
 }
-void vector_clear(vector_t* vec){
+void vector_clear(intVector_t* vec){
     assert(vec != NULL && "Vector pointer must not be NULL");
     vec->size = 0;
 }
-void vector_update(vector_t* vec, int element, size_t pos){
+void vector_update(intVector_t* vec, int element, size_t pos){
     assert(vec != NULL && "Vector pointer must not be NULL");
     assert(pos<vec->size && "Out of Range error");
     vec->data[pos] = element;
 }
-int vector_get(vector_t* vec, size_t pos){
+int vector_get(intVector_t* vec, size_t pos){
     assert(vec != NULL && "Vector pointer must not be NULL");
     assert(pos<vec->size && "Out of Range error");
 
     return vec->data[pos];
 }
-int* vector_at(vector_t* vec, size_t pos){
+int* vector_at(intVector_t* vec, size_t pos){
     assert(vec != NULL && "Vector pointer must not be NULL");
     assert(pos<vec->size && "Out of Range error");
 
     return &vec->data[pos];
 }
-int vector_insert(vector_t* vec, int element, size_t pos){
+int vector_insert(intVector_t* vec, int element, size_t pos){
     assert(vec != NULL && "Vector pointer must not be NULL");
     if(pos >= vec->size){
         return OUT_OF_RANGE;
@@ -140,7 +140,7 @@ int vector_insert(vector_t* vec, int element, size_t pos){
     vec->size++;
     return SUCCESS;
 }
-void vector_erase(vector_t* vec, size_t pos){
+void vector_erase(intVector_t* vec, size_t pos){
     assert(vec != NULL && "Vector pointer must not be NULL");
     assert(vec != NULL && "Out of range error");
     utils_swap(&vec->data[pos], &vec->data[vec->size-1], sizeof(int));
@@ -148,7 +148,7 @@ void vector_erase(vector_t* vec, size_t pos){
 }
 
 // Operation
-size_t vector_find(vector_t* vec, int element, size_t start){
+size_t vector_find(intVector_t* vec, int element, size_t start){
     assert(vec != NULL && "Vector pointer must not be NULL");
     for(size_t i = start; i < vec->size; i++){
         if(vec->data[i] == element){

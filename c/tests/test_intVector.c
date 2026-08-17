@@ -6,12 +6,13 @@
 
 #define DSA_EXPOSED
 #define VECTOR_CAPACITY_STRATEGY 2
-#include "data_structures/vector.h"
+#include "data_structures/intVector.h"
+
 
 void test_creation_and_capacity(void) {
     printf("Running test_creation_and_capacity:  ");
     
-    vector_t* vec = vector_create(5);
+    intVector_t* vec = vector_create(5);
     assert(vec != NULL);
     
     assert(vector_size(vec) == 0);
@@ -29,7 +30,7 @@ void test_creation_and_capacity(void) {
 void test_push_and_find(void) {
     printf("Running test_push_and_find: ");
     
-    vector_t* vec = vector_create(2);
+    intVector_t* vec = vector_create(2);
     assert(vec != NULL);
     
     // Push elements (should trigger dynamic resizing)
@@ -56,7 +57,7 @@ void test_push_and_find(void) {
 void test_update_and_clear(void) {
     printf("Running test_update_and_clear: ");
     
-    vector_t* vec = vector_create(5);
+    intVector_t* vec = vector_create(5);
     vector_push_back(vec, 100);
     vector_push_back(vec, 200);
     
@@ -79,7 +80,7 @@ void test_update_and_clear(void) {
 void test_insert_and_erase(void) {
     printf("Running test_insert_and_erase: ");
     
-    vector_t* vec = vector_create(5);
+    intVector_t* vec = vector_create(5);
     vector_push_back(vec, 10);
     vector_push_back(vec, 30);
     
@@ -112,7 +113,7 @@ void test_error_handling(void) {
 
     TEST_ASSERT(vector_push_back, NULL, 10); // This SHOULD trigger the assert
 
-    vector_t* vec = vector_create(2);
+    intVector_t* vec = vector_create(2);
     vector_push_back(vec, 10);
 
     TEST_ASSERT(vector_size,NULL);       
@@ -139,12 +140,12 @@ void test_error_handling(void) {
 void test_copy(void) {
     printf("Running test_copy: ");
     
-    vector_t* original = vector_create(5);
+    intVector_t* original = vector_create(5);
     vector_push_back(original, 1);
     vector_push_back(original, 2);
     vector_push_back(original, 3);
     
-    vector_t* clone = vector_copy(original);
+    intVector_t* clone = vector_copy(original);
     assert(clone != NULL);
     assert(vector_size(clone) == 3);
     
@@ -161,7 +162,7 @@ void test_copy(void) {
 }
 
 int main(void) {
-    printf("Starting Vector Test Suite\n");
+    printf("Starting Int Vector Test Suite\n");
     printf("--------------------------------\n");
     
     test_creation_and_capacity();
@@ -170,7 +171,7 @@ int main(void) {
     test_insert_and_erase();
     test_error_handling();
     test_copy();
-    
+
     printf("--------------------------------\n");
     return 0;
 }
