@@ -1,0 +1,5 @@
+If:
+  PathMatch: [tests/.*, benchmark/.*]
+Diagnostics:
+  ClangTidy:
+    Remove: '*'

@@ -51,6 +51,7 @@ def max_min_noob(array:list)->Tuple[int, int] | None:
     print(operations)
     return (maks, min)
 
-array = [1,1,3,2,5,5,3,4,7,77,1,2,33]
-print(max_min(array))
-print(max_min_noob(array))
+if __name__ == "__main__":
+    array = [1,1,3,2,5,5,3,4,7,77,1,2,33]
+    print(max_min(array))
+    print(max_min_noob(array))

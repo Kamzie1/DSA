@@ -41,10 +41,11 @@ def fib_rek_mem(n):
     mem = [0 for _ in range(n+1)]
     return _fib_rek_mem(n, mem)
 
-iter = 0
-print(fib_iter(6), iter)
-iter = 0
-print(fib_rek(6), iter)
-iter = 0
-print(fib_rek_mem(6), iter)
+if __name__ == "__main__":
+    iter = 0
+    print(fib_iter(6), iter)
+    iter = 0
+    print(fib_rek(6), iter)
+    iter = 0
+    print(fib_rek_mem(6), iter)
 

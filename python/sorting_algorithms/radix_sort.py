@@ -15,6 +15,7 @@ def radix_sort(array:list):
         array.sort(key = lambda x: x[length - i - 1])
 
 
-array = ["ala", "mak", "sia", "dla", "kot", "plo", "wso", "aso"]
-radix_sort(array)
-print(array)
+if __name__ == "__main__":
+    array = ["ala", "mak", "sia", "dla", "kot", "plo", "wso", "aso"]
+    radix_sort(array)
+    print(array)

@@ -34,5 +34,6 @@ def bucket_sort(array:list)->list:
 
     return sorted
 
-array = [0.1, 0.3, 0.2, 0.01, 0.5, 0.25, 0.6, 1, 0]
-print(bucket_sort(array))
+if __name__ == "__main__":
+    array = [0.1, 0.3, 0.2, 0.01, 0.5, 0.25, 0.6, 1, 0]
+    print(bucket_sort(array))

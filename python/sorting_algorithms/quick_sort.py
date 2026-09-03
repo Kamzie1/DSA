@@ -64,7 +64,7 @@ def quick_sort(array:list):
         quick sort algorithm.
         The algorithm splits the array into two smaller arrays, one with bigger and one with smaller numbers all the way down.
         Time complexity: omega(nlogn), however O(n^2) when we don't divide equally (m is the highest/lowest number)
-        Memory complexity: O(n) (function call stack in recursion)
+        Memory complexity: O(1)
         Type:
           * in place
           * stable 
@@ -72,17 +72,18 @@ def quick_sort(array:list):
     quick_sort_rek(array, 0, len(array)-1)
 
 
-array1 = [1,5,4,6,7,3,2]
-array2 = [1,5,4,6,7,3,2]
-array3 = [1,1,3,2,5,5,3,4,7,77,1,2,33]
+if __name__ == "__main__":
+    array1 = [1,5,4,6,7,3,2]
+    array2 = [1,5,4,6,7,3,2]
+    array3 = [1,1,3,2,5,5,3,4,7,77,1,2,33]
 
 #partition_horne(array1, 0, len(array1) -1)
 #partition_lomuto(array2, 0, len(array2) -1)
 #print(array1)
 #print(array2)
 
-quick_sort(array1)
-print(array1)
-quick_sort(array3)
-print(array3)
+    quick_sort(array1)
+    print(array1)
+    quick_sort(array3)
+    print(array3)
 
